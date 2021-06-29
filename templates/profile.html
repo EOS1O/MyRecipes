@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    <title>My Recipes</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='htmleaf-demo.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename='normalize.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename='homepage.css')}}" />
+    <!-- <link rel="stylesheet" href="{{url_for('static', filename='font-awesome.min.css')}}" /> -->
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap-grid.min')}}" />
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='tab.css')}}" />
+    <script>
+        function signIn(){
+            if(document.getElementById("signIn").className === "notDisplaySignIn"){
+                document.getElementById("signIn").style.display = 'block'
+                document.getElementById("signIn").style.position = 'absolute'
+                document.getElementById("signIn").style.top = '0px'
+                document.getElementById("signIn").style.left = '0px'
+            }else{
+                document.getElementById("signIn").className === "notDisplaySignIn"
+            }
+        };
+        function cancelSignIn(){
+            if(document.getElementById("signIn").className === "notDisplaySignIn"){
+                document.getElementById("signIn").style.display = 'none'
+            }
+        };
+        window.onload=function(){
+            document.getElementById("userName").innerHTML = localStorage.getItem("userName");
+			document.getElementById("userName").style.display = 'block';
+			document.getElementById("userName").style.color = 'rgb(105, 105, 105)'
+			console.log(localStorage.getItem("userId"),'localStorage.getItem("userId")')
+        };
+    </script>
+    <script src={{url_for('static',filename='jquery-1.11.0.min.js')}}></script>
+</head>
+<body>
+    <div style="display:flex;justify-content:center">
+        <img src={{url_for('static',filename='logo.png')}} style="width:225px;height:75px;padding:0px 20px 20px 20px;position:absolute;left:0px;top:15px" />
+        <div style="position:absolute;right:91px;top:27px;display: flex;">
+            <img src={{url_for('static',filename='signIn.svg')}} style="width:25px;height:25px;" />
+            <div style="font-weight:bold;color:#696969;margin: 2px 0px 0px 15px;display: none;" id="userName" onClick="location.href='http://www.5iyin.com/';">{{userName}}</div>
+        </div>
+        
+    </div>
+
+    <div>
+        <div style="width:80%;height: 40px;margin: 80px auto 0px auto;">
+        <div style="float: left; margin-left: 27%; margin-top: 3%;"><img src="{{ photo }}" style="width: 120px;height: 120px;border-radius:50%;object-fit:cover;"></div>
+        <div style="float: right; margin-right: 27%;margin-top: 4%;color: #1b1e21">
+            <div>User name: {{ username }}</div>
+            <div>Contact details: {{ email }}</div>
+            <div>Followers: {{ fans }}</div>
+            <button style="margin: 20px">Edit</button>
+        </div>
+
+    </div>
+	    <div class="container">
+		<div class="menus">
+			<div id="menus" style="font-family: Monospace">
+				<a href="##" class="active">My Recipe</a>
+				<a href="##">My Likes</a>
+				<a href="##">My Subscribe</a>
+			</div>
+
+		</div>
+		<div class="boxs" id="boxs">
+			<div class="create" style="font-family: monospace">
+				<button class="add">Create</button>
+			</div>
+			<div class="box" style="display: block;font-family: monospace">
+                {% for recipe in recipes.keys() %}
+                    <div class="item" id="recipe_{{ recipes[recipe].recipe_id }}">
+                        <img src="{{ recipes[recipe].photo }}" style="width: 160px;height:140px;" />
+                        <div style="color:#000000;margin: 10px;">{{ recipes[recipe].name }}</div>
+                        <div class="btns">
+                            <a href="#">Edit</a>
+                            <a class="my_recipes" onclick="my_recipes_delete_event('{{ recipes[recipe].recipe_id }}')">Delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+			</div>
+			<div class="box" style="font-family: monospace">
+                {% for like in likes.keys() %}
+                    <div class="item">
+                        <img src="{{ likes[like].photo }}" style="width: 160px;height:140px;" />
+                        <div style="color:#000000;margin: 10px;">{{ likes[like].name }}</div>
+                        <div class="btns">
+                            <a href="#">Unlike</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+			</div>
+			<div class="box" style="font-family: monospace">
+                {% for subscript in subscripts.keys() %}
+				    <div class="item">
+                        <img src="{{ subscripts[subscript].photo }}" style="width: 120px;height:110px;border-radius: 50%;object-fit:cover;" />
+                        <div style="color:#000000;margin: 10px;">{{ subscripts[subscript].name }}</div>
+                        <div class="btns">
+                            <a href="#">Unsubscribe</a>
+
+                        </div>
+                    </div>
+                {% endfor %}
+{#				<div class="item">#}
+{#					<img src="img/1.jpg" />#}
+{#					<h2>Tom</h2>#}
+{#					<div class="btns">#}
+{#						<a href="#">Unsubscribe</a>#}
+{##}
+{#					</div>#}
+{#				</div>#}
+{#				<div class="item">#}
+{#					<img src="img/1.jpg" />#}
+{#					<h2>Tom</h2>#}
+{#					<div class="btns">#}
+{#						<a href="#">Unsubscribe</a>#}
+{##}
+{#					</div>#}
+{#				</div>#}
+{#				<div class="item">#}
+{#					<img src="img/1.jpg" />#}
+{#					<h2>Tom</h2>#}
+{#					<div class="btns">#}
+{#						<a href="#">Unsubscribe</a>#}
+{##}
+{#					</div>#}
+{#				</div>#}
+			</div>
+		</div>
+	</div>
+    </div>
+
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  	<script src={{url_for('static', filename='tab.js')}}></script>
+
+    <div>
+        <div style="position:absolute;bottom:1px">
+            <div style="width:100vw;height:1px;background-color:#c0c0c0;margin-top:10px">
+            </div>
+            <div style="display:flex;justify-content:space-around;width:70%;margin:10px auto;color:#696969">
+                <div>
+                    Contact us
+                </div>
+                <div>
+                    Join us
+                </div>
+                <div>
+                    User Privacy
+                </div>
+                <div>
+                    Give Feedback
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="signIn" class="notDisplaySignIn">
+        <div class="demo form-bg">
+           <div class="cancelSignIn">
+               <span class="cancelIcon" onclick="cancelSignIn()">x</span>     
+           </div>
+           <div class="container">
+
+               <div class="row">
+                   <div class="col-md-offset-4 col-md-4 col-sm-offset-3 col-sm-6">
+                       <form class="form-horizontal" action="/" method="POST">
+                           <div class="heading">Login form</div>
+                           <div class="form-group">
+                               <i class="fa fa-user"></i><input required name="email" type="email" class="form-control" style="margin-left: 15px;" placeholder="Username" id="exampleInputEmail1" autocomplete="off">
+                           </div>
+                           <div class="form-group">
+                               <i class="fa fa-lock"></i><input required type="password" name="password" class="form-control" style="margin-left: 15px;" placeholder="Password" autocomplete="off"/>
+                           </div>
+                           <div class="form-group">
+                               <button type="submit" class="btn btn-default" onclick="changeUserName()"><i class="fa fa-arrow-right"></i></button>
+                               <span>Don't have an account? <a href="" class="create_account">Sign up</a></span>
+                           </div>
+                       </form>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+	
+	<script src={{url_for('static', filename='awesome-slider.min.js')}}></script>
+  	<script src={{url_for('static', filename='swiper.js')}}></script>
+  	<script src={{url_for('static', filename='delete.js')}}></script>
+</body>
+</html>
